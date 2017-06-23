@@ -69,7 +69,7 @@ data_classes = [i for i in range(0, 4) for j in range(0, 100)]
 settings = {
     # Required settings
     "n_inputs": 250,                                              # Number of network input signals
-    "layers": [(50, sigmoid_function), (1, sigmoid_function)],   # [ (number_of_neurons, activation_function) ]
+    "layers": [(250, sigmoid_function), (1, sigmoid_function)],   # [ (number_of_neurons, activation_function) ]
     # Optional settings
     "initial_bias_value": 0.0,
     "weights_low": -0.1,                                        # Lower bound on the initial weight value
@@ -77,14 +77,11 @@ settings = {
 }
 network = NeuralNet(settings)
 # Training the net
-dataset = [
-    # Instance( [inputs], [outputs] )
-    [Instance(data_set[i, :], data_classes[i]) for i in range(0, len(data_set))]
-    # Instance([0, 0], [0]), Instance([1, 0], [1]), Instance([0, 1], [1]), Instance([1, 1], [0])
-]
-training_set = [
-    [Instance(trainingset[i, :], training_classes[i]) for i in range(0, len(trainingset))]
-]
+dataset = [Instance(data_set[i, :], data_classes[i]) for i in range(0, len(data_set))]
+# Instance( [inputs], [outputs] )
+# Instance([0, 0], [0]), Instance([1, 0], [1]), Instance([0, 1], [1]), Instance([1, 1], [0])
+
+training_set = [Instance(trainingset[i, :], training_classes[i]) for i in range(0, len(trainingset))]
 test_set = data_set
 cost_function = binary_cross_entropy_cost
 
