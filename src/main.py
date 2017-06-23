@@ -6,7 +6,8 @@ from nimblenet.activation_functions import sigmoid_function
 from nimblenet.neuralnet import NeuralNet
 from nimblenet.data_structures import Instance
 from nimblenet.learning_algorithms import backpropagation
-
+from nimblenet.cost_functions import sum_squared_error
+from nimblenet.learning_algorithms import RMSprop
 
 def print_results(original, guess):
     correctness = (original == guess)
@@ -69,7 +70,7 @@ data_classes = [i for i in range(0, 4) for j in range(0, 100)]
 settings = {
     # Required settings
     "n_inputs": 250,                                              # Number of network input signals
-    "layers": [(250, sigmoid_function), (1, sigmoid_function)],   # [ (number_of_neurons, activation_function) ]
+    "layers": [(3, sigmoid_function), (1, sigmoid_function)],   # [ (number_of_neurons, activation_function) ]
     # Optional settings
     "initial_bias_value": 0.0,
     "weights_low": -0.1,                                        # Lower bound on the initial weight value
@@ -77,13 +78,16 @@ settings = {
 }
 network = NeuralNet(settings)
 # Training the net
-dataset = [Instance(data_set[i, :], data_classes[i]) for i in range(0, len(data_set))]
+dataset = [Instance(data_set[i, :], [data_classes[i]]) for i in range(0, len(data_set))]
 # Instance( [inputs], [outputs] )
-# Instance([0, 0], [0]), Instance([1, 0], [1]), Instance([0, 1], [1]), Instance([1, 1], [0])
-
-training_set = [Instance(trainingset[i, :], training_classes[i]) for i in range(0, len(trainingset))]
-test_set = data_set
-cost_function = binary_cross_entropy_cost
+# dataset = [
+#     Instance([0, 0], [0]), Instance([1, 0], [1]), Instance([0, 1], [1]), Instance([1, 1], [0])
+# ]
+# import pdb; pdb.set_trace()
+training_set = [Instance(trainingset[i, :], [training_classes[i]]) for i in range(0, len(trainingset))]
+# training_set = dataset
+test_set = dataset
+cost_function = sum_squared_error
 
 backpropagation(
     # Required parameters
@@ -101,6 +105,10 @@ backpropagation(
     print_rate=1000,            # The epoch interval to print progression statistics
     save_trained_network=False  # Whether to ask the user if they would like to save the network after training
 )
+
+# prediction_set = [Instance([0, 1]), Instance([1, 0])]
+prediction_set = [Instance(data_set[i, :]) for i in range(0, len(data_set))]
+print network.predict(prediction_set)
 
 # print_results(data_classes, guess)
 
