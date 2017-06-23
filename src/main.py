@@ -56,9 +56,9 @@ wfdb.plot_train_cases()
 trainingset, training_classes = wfdb.get_training_set()
 # data_set, data_classes = wfdb.get_heartbeats()
 
-data_set = wfdb.get_equally_prob_hb(100)
-data_set = np.transpose(data_set)
-data_classes = [i for i in range(0, 4) for j in range(0, 100)]
+test_set = wfdb.get_equally_prob_hb(100)
+test_set = np.transpose(test_set)
+test_classes = [i for i in range(0, 4) for j in range(0, 100)]
 # SOM
 # som = som.SOM(training_set, length=training_set.shape[1], epochs=7000, x=8, y=8)
 # som.plot_weights_trains(training_set, training_classes)
@@ -70,15 +70,20 @@ data_classes = [i for i in range(0, 4) for j in range(0, 100)]
 settings = {
     # Required settings
     "n_inputs": 250,                                              # Number of network input signals
-    "layers": [(3, sigmoid_function), (1, sigmoid_function)],   # [ (number_of_neurons, activation_function) ]
+    "layers": [(125, sigmoid_function),
+               (32, sigmoid_function),
+               (1, sigmoid_function)],   # [ (number_of_neurons, activation_function) ]
     # Optional settings
     "initial_bias_value": 0.0,
     "weights_low": -0.1,                                        # Lower bound on the initial weight value
     "weights_high": 0.1,                                        # Upper bound on the initial weight value
 }
 network = NeuralNet(settings)
+expected_output = [
+    [0, 0, 0, 0, 0], [1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0], [0, 0, 0, 0, 1]
+]
 # Training the net
-dataset = [Instance(data_set[i, :], [data_classes[i]]) for i in range(0, len(data_set))]
+dataset = [Instance(test_set[i, :], [test_classes[i]]) for i in range(0, len(test_set))]
 # Instance( [inputs], [outputs] )
 # dataset = [
 #     Instance([0, 0], [0]), Instance([1, 0], [1]), Instance([0, 1], [1]), Instance([1, 1], [0])
@@ -88,7 +93,7 @@ training_set = [Instance(trainingset[i, :], [training_classes[i]]) for i in rang
 # training_set = dataset
 test_set = dataset
 cost_function = sum_squared_error
-
+print 'Starting to train...'
 backpropagation(
     # Required parameters
     network,                     # the neural network instance to train
@@ -98,7 +103,7 @@ backpropagation(
 
     # Optional parameters
     ERROR_LIMIT=1e-3,           # Error tolerance when terminating the learning
-    max_iterations=(),          # Regardless of the achieved error, terminate after max_iterations epochs. Default: infinite
+    max_iterations=10000,          # Regardless of the achieved error, terminate after max_iterations epochs. Default: infinite
     batch_size=0,               # Set the batch size. 0 implies using the entire training_set as a batch, 1 equals no batch learning, and any other number dictate the batch size
     input_layer_dropout=0.0,    # Dropout fraction of the input layer
     hidden_layer_dropout=0.0,   # Dropout fraction of in the hidden layer(s)
@@ -107,8 +112,10 @@ backpropagation(
 )
 
 # prediction_set = [Instance([0, 1]), Instance([1, 0])]
-prediction_set = [Instance(data_set[i, :]) for i in range(0, len(data_set))]
-print network.predict(prediction_set)
-
+data_set, data_classes = wfdb.get_heartbeats()
+# import pdb; pdb.set_trace()
+# prediction_set = [Instance(data_set[i, :]) for i in range(0, len(data_set))]
+prediction_set = [Instance(trainingset[i, :]) for i in range(0, len(trainingset))]
+print np.round(network.predict(prediction_set) * 3)
 # print_results(data_classes, guess)
-
+# import pdb; pdb.set_trace()

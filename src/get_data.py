@@ -1,9 +1,9 @@
 import wfdb
 import numpy as np
 import matplotlib.pyplot as plt
-import pca
+from pca import PCA
 # from matplotlib.mlab import PCA
-from sklearn.decomposition import PCA
+# from sklearn.decomposition import PCA
 from IPython.display import display
 
 
@@ -43,14 +43,14 @@ class WFDB:
             self.heartbeats[:, i] = self.heartbeats[:, i] - np.ones(2*self.size_hb)*self.means[i]
             self.heartbeats[:, i] = self.heartbeats[:, i] / max(self.desv[i], 1)
 
-        self.filter_data()
-
         self.view_kinds()                               # View the kinds of hearbeats
         self.classes = self.calculate_classes()         # Get the kind of each heartbeat (N, V, S, J or others)
         [self.heartbeatsN, self.heartbeatsV, self.heartbeatsS, self.heartbeatsJ] = self.classify()  # get idx by class
 
+        self.num_training_cases = 20  # set number of training cases
+        self.filter_data()
+        [self.heartbeatsN, self.heartbeatsV, self.heartbeatsS, self.heartbeatsJ] = self.classify()
         # Training Set
-        self.num_training_cases = 20             # set number of training cases
         [self.trainN, self.trainV, self.trainS, self.trainJ] = self.get_training_cases(self.num_training_cases)
         self.training_classes = [i for i in range(0, 4) for j in range(0, self.num_training_cases)]
         self.training_set = np.concatenate((self.trainN, self.trainV, self.trainS, self.trainJ), axis=1)
@@ -89,14 +89,15 @@ class WFDB:
         return heartbeatsN, heartbeatsV, heartbeatsS, heartbeatsJ
 
     def filter_data(self):
-        self.heartbeats = np.transpose(self.heartbeats)
+        # self.heartbeats = np.transpose(self.heartbeats)
         # import pdb; pdb.set_trace()
-        # for i in range(0, self.heartbeats.shape[0]):
-        #    self.heartbeats[i, :] = pca.pca(self.heartbeats[i, :])
+        generator = self.get_equally_prob_hb(100)
+        pca = PCA(generator, dim=32, size_hb=250)
+        self.heartbeats = pca.reduce_dimensions(self.heartbeats)
         # results = PCA(self.heartbeats)
         # self.heartbeats = PCA(n_components=64).fit(self.heartbeats).transform(self.heartbeats)
 
-        self.heartbeats = np.transpose(self.heartbeats)
+        # self.heartbeats = np.transpose(self.heartbeats)
 
     def calculate_classes(self):
         # Generate an array of classes that identifies each heartbeat by a number

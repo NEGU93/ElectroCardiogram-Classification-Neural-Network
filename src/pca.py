@@ -1,19 +1,22 @@
 import numpy as np
 
 
-def pca(data, dim=32, size_hb=250):
-    C = np.cov(data)
-    import pdb; pdb.set_trace()
-    (auval, auvec) = np.linalg.eigh(C)
+class PCA:
+    def __init__(self, data, dim=32, size_hb=250):
+        C = np.cov(data)
+        self.dim = dim
+        self.size_hb = size_hb
+        # import pdb; pdb.set_trace()
+        (self.auval, self.auvec) = np.linalg.eigh(C)
 
-    # Sort from bigger to smaller
-    idx = auval.argsor()[::-1]
-    auval = auval[idx]
-    auvec = auvec[:, idx]
-    auvec = np.matrix.transpose(auvec)
+        # Sort from bigger to smaller
+        idx = self.auval.argsort()[::-1]
+        self.auval = self.auval[idx]
+        self.auvec = self.auvec[:, idx]
+        self.auvec = np.matrix.transpose(self.auvec)
 
-    u = np.dot(auvec, data)     # transform to PCA space
-    u[dim:size_hb] = 0          # delete 'extra' dimensions
-
-    recover = np.dot(np.matrix.transpose(auvec), u)
-    return recover
+    def reduce_dimensions(self, data):
+        u = np.dot(self.auvec, data)  # transform to PCA space
+        u[self.dim:self.size_hb] = 0  # delete 'extra' dimensions
+        recover = np.dot(np.matrix.transpose(self.auvec), u)
+        return recover
