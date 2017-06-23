@@ -1,0 +1,27 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: ECG.aux
+The style file: IEEEtran.bst
+Database file #1: ref.bib
+-- IEEEtran.bst version 1.13 (2008/09/30) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+Name 1 in "Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet" has a comma at the end for entry PHYSIONET
+while executing---line 2419 of file IEEEtran.bst
+Too many commas in name 1 of "Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet" for entry PHYSIONET
+while executing---line 2419 of file IEEEtran.bst
+Too many commas in name 1 of "Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet" for entry PHYSIONET
+while executing---line 2419 of file IEEEtran.bst
+Too many commas in name 1 of "Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet" for entry PHYSIONET
+while executing---line 2419 of file IEEEtran.bst
+Too many commas in name 1 of "Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet" for entry PHYSIONET
+while executing---line 2419 of file IEEEtran.bst
+Too many commas in name 1 of "Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet" for entry PHYSIONET
+while executing---line 2419 of file IEEEtran.bst
+Too many commas in name 1 of "Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet" for entry PHYSIONET
+while executing---line 2419 of file IEEEtran.bst
+Too many commas in name 1 of "Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet" for entry PHYSIONET
+while executing---line 2419 of file IEEEtran.bst
+Too many commas in name 1 of "Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet" for entry PHYSIONET
+while executing---line 2419 of file IEEEtran.bst
+
+Done.
+(There were 9 error messages)

@@ -1,0 +1,30 @@
+TP2 - Clasificación de latidos
+
+
+El trabajo consiste en clasificar los latidos de un segmento de señal de electrocardiograma de dos canales de 21 horas de duracion, según el tipo de arritmia.
+Para ello se utilizará una de las grabaciones de la "MIT-BIH Long Term Database", disponible en el repositorio de PhysioNet. La grabación incluye anotaciones que identifican la posición y tipo de cada uno de los latidos presentes en la misma.
+La grabación que se utilizará se identifica por el número "14172", y el identificador de la base de datos es "ltdb".
+La página de physionet de donde se puede bajar la grabación y más información es: https://physionet.org/physiobank/database/ltdb/
+Se puede descargar la grabación convertida a formato csv o a format matlab con la herramienta de physionet "ATM":
+https://www.physionet.org/cgi-bin/atm/ATM
+También se puede descargar la información utilizando la librería "wfdb" para python que se encuentra en los ejemplos dados en clase de Jupyter Notebook.
+La grabación 14172 presenta principalmente cuatro tipos de latido:
+
+	- Normales, identificados por la letra 'N'.
+	- Ventriculares prematuros, identificados por la letra 'V'.
+	- Supraventriculares prematuros, identificados por la letra 'S'.
+	- Nodales prematuros, identificados por la letra 'J'.
+
+El objetivo es entrenar un sistema que pueda reconocer y clasificar estos latidos.
+Recordar separar los datos de entrada en un grupo de entrenamiento, un grupo de validación y uno de prueba.
+Se deben reportar los resultados del sistema entrenado sobre el grupo de prueba utilizando la matriz de confusión, y los valores de sensibilidad, especificidad y valor predictivo positivo y negativo.
+Es importante que el grupo de prueba no forme parte del entrenamiento para que los resultados sean válidos.
+Se debe aplicar algún método para evitar overfitting del sistema (p.ej. finalizar el entrenamiento cuando aumente el error sobre el grupo de validación, o alguna técnica de regularización que investiguen y deseen aplicar).
+Se recomienda preprocesar los datos de alguna manera al presentarlos al sistema (p. ej. filtrado para eliminar baseline wander y ruidos de alta frecuencia, reducción de dimensionalidad, y otros que encuentren y decidan aplicar).
+
+Entregables:
+- Informe detallando el desarrollo del algoritmo y justificando las decisiones tomadas durante el mismo
+- Análisis de los resultados obtenidos en una matriz de confusión, junto a los valores de sensibilidad, especificidad y valor predictivo positivo y negativo.
+- Presentación breve en clase sobre el trabajo realizado.
+
+Para SOM: CLAMPING

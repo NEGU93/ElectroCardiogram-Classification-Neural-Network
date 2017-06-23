@@ -1,0 +1,67 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{cite}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+% \usepackage{minted}
+\usepackage{listings}
+\usepackage{color} 						% red, green, blue, yellow, cyan, magenta, black, white
+
+\usepackage{float} %used to force figures in a position
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\begin{document}
+\title{Clasificación de ECG usando Redes Neuronales}
+
+\author{\IEEEauthorblockN{J. Agust\'{i}n Barrachina}
+	\IEEEauthorblockA{Miembro Estudiantil IEEE\\
+		Instituto Tecnol\'{o}gico de Buenos Aires\\}}
+\maketitle
+
+% \tableofcontents
+% \newpage
+
+\begin{abstract}
+	Se clasificaron latidos de un segmento de señal de un electrocardiograma según el tipo de arritmia. El algoritmo usado fue un perceptrón multicapa usando backpropagation.
+\end{abstract}
+
+\section{\textbf{Introducci\'{o}n}}
+
+El trabajo consistió en clasificar los latidos de un segmento de una señal de electrocardiograma de dos canales de 21 horas de duración según el tipo de arritmia.
+
+El objetivo fue crear y entrenar un sistema que pueda reconocer y clasificar los distintos tipos de latidos.
+
+\section{Data Set}
+
+Se utilizaron las grabaciones de "MIT-BIH Long Term Database" \cite{MIT-BIH} disponible en el repositorio PhysioNet \cite{PHYSIONET}.
+
+La grabación incluye anotaciones que identifican la posición y tipo de cada uno de los latidos presentes en la misma.
+
+La grabación se identificará por el número 14172, y el identificador de la base de datos es "ltdb" (\underline{L}ong \underline{T}erm \underline{D}ata\underline{B}ase).
+La misma presenta principalmente 4 tipos de latidos:
+
+\begin{itemize}
+	\item \textbf{Normales}. Identificados por la letra 'N'.
+	\item \textbf{Ventriculares prematuros} Identificados por la letra 'V'.
+	\item \textbf{Supraventriculares prematuros} Identificados por la letra 'S'.
+	\item \textbf{Nodales prematuros} Identificados por la letra 'J'.
+\end{itemize}
+
+Para el tratamiento de los datos se utlizó la librería de python "wfdb" \cite{WFDB}.
+
+\IEEEpeerreviewmaketitle
+
+\section*{\textbf{Acknowledgment}}
+
+\newpage
+
+\IEEEtriggeratref{8}
+\bibliographystyle{IEEEtran}
+\bibliography{ref}
+\end{document}
