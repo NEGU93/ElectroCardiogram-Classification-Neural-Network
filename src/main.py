@@ -11,17 +11,17 @@ from nimblenet.cost_functions import sum_squared_error
 def print_results(original, guess):
     correctness = np.equal(original, guess)
     cases = [(0, 'Normales'), (1, 'Ventriculares'), (2, 'Supraventriculares'), (3, 'Nodales Prematuros')] # , (4, 'otros')]
-    # ponderado = 0
+    ponderado = 0.0
     for c, name in cases:
-        count = 0
-        total = 0
+        count = 0.0
+        total = 0.0
         for i in range(0, len(guess)):
             if c == guess[i]:
-                total += 1
+                total += 1.0
                 if correctness[i]:          # Good diagnose
-                    count += 1
+                    count += 1.0
         totales_reales = sum([1 for o in original if o == c])
-        # ponderado += count / max(totales_reales, 1)
+        ponderado = (count * 100 / max(total, 1))
         print name, ' totales ',
         print totales_reales
         print name, ' hallados: ',
@@ -37,7 +37,7 @@ def print_results(original, guess):
         print('------------------------------')
     print 'Aciertos totales: ', sum(correctness),
     print '(', '{0:,.2f}'.format(sum(correctness) * 100 / len(correctness)), '%)'
-    # print 'Porcentaje ponderado: ', '{0:,.2f}'.format(ponderado * 100 / 4), '%'
+    print 'Porcentaje ponderado: ', '{0:,.2f}'.format(ponderado * 100 / 4), '%'
 
 wfdb = gd.WFDB()
 wfdb.plot_train_cases()
@@ -73,16 +73,17 @@ backpropagation(
     cost_function,               # the cost function to optimize
     # Optional parameters
     ERROR_LIMIT=1e-3,           # Error tolerance when terminating the learning
-    max_iterations=10000,          # Regardless of the achieved error, terminate after max_iterations epochs. Default: infinite
+    max_iterations=(),          # Regardless of the achieved error, terminate after max_iterations epochs. Default: infinite
     batch_size=0,               # Set the batch size. 0 implies using the entire training_set as a batch, 1 equals no batch learning, and any other number dictate the batch size
-    input_layer_dropout=0.0,    # Dropout fraction of the input layer
-    hidden_layer_dropout=0.3,   # Dropout fraction of in the hidden layer(s)
+    input_layer_dropout=0.5,    # Dropout fraction of the input layer
+    hidden_layer_dropout=0.5,   # Dropout fraction of in the hidden layer(s)
     print_rate=1000,            # The epoch interval to print progression statistics
-    save_trained_network=False  # Whether to ask the user if they would like to save the network after training
+    save_trained_network=False,  # Whether to ask the user if they would like to save the network after training
+    early_stop=True
 )
 
 # prediction_set = [Instance([0, 1]), Instance([1, 0])]
-data_set, data_classes = wfdb.get_organized(2000)
+data_set, data_classes = wfdb.get_organized()
 data_set = np.transpose(data_set)
 # import pdb; pdb.set_trace()
 prediction_set = [Instance(data_set[i, :]) for i in range(0, len(data_set))]
