@@ -48,7 +48,7 @@ class WFDB:
         [self.heartbeatsN, self.heartbeatsV, self.heartbeatsS, self.heartbeatsJ] = self.classify()
         # Training Set
         self.num_training_cases = 50  # set number of training cases
-        [self.trainN, self.trainV, self.trainS, self.trainJ] = self.generate_training_cases(self.num_training_cases)
+        [self.trainN, self.trainV, self.trainS, self.trainJ] = self.generate_training_cases()
         self.training_classes = [i for i in range(0, 4) for _ in range(0, self.num_training_cases)]
         self.training_set = np.concatenate((self.trainN, self.trainV, self.trainS, self.trainJ), axis=1)
         self.training_set = np.transpose(self.training_set)
@@ -120,7 +120,7 @@ class WFDB:
             self.heartbeats[:, i] = self.heartbeats[:, i] / max(desvs[i], 1)
         return self.heartbeats
 
-    def generate_training_cases(self, num_training_cases=5):
+    def generate_training_cases(self):
         indexN = [i for i, x in enumerate(self.classes) if x == 0]
         indexV = [i for i, x in enumerate(self.classes) if x == 1]
         indexS = [i for i, x in enumerate(self.classes) if x == 2]
