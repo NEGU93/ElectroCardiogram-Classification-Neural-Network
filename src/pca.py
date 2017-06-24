@@ -19,4 +19,4 @@ class PCA:
         u = np.dot(self.auvec, data)  # transform to PCA space
         u[self.dim:self.size_hb] = 0  # delete 'extra' dimensions
         recover = np.dot(np.matrix.transpose(self.auvec), u)
-        return recover
+        return u[0:self.dim]

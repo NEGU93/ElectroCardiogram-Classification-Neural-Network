@@ -1,5 +1,5 @@
 import get_data as gd
-# import som
+import som
 import numpy as np
 from nimblenet.cost_functions import binary_cross_entropy_cost
 from nimblenet.activation_functions import sigmoid_function
@@ -7,49 +7,38 @@ from nimblenet.neuralnet import NeuralNet
 from nimblenet.data_structures import Instance
 from nimblenet.learning_algorithms import backpropagation
 from nimblenet.cost_functions import sum_squared_error
-from nimblenet.learning_algorithms import RMSprop
+
 
 def print_results(original, guess):
-    correctness = (original == guess)
-    print('Aciertos totales: ', sum(correctness))
-    print('(', '{0:,.2f}'.format(sum(correctness) * 100 / len(correctness)), ')')
-
-    cases = [(0, 'Normales'), (1, 'Ventriculares'), (2, 'Supraventriculares'), (3, 'Nodales Prematuros'), (4, 'otros')]
-    falsos_negativos = 0  # Dije que estaba ok cuando no lo estaba
-    falsos_positivos = 0  # Dije que estaba mal cuando estaba bien
-    totalN = 0
-    totalM = 0
+    correctness = np.equal(original, guess)
+    cases = [(0, 'Normales'), (1, 'Ventriculares'), (2, 'Supraventriculares'), (3, 'Nodales Prematuros')] # , (4, 'otros')]
+    # ponderado = 0
     for c, name in cases:
         count = 0
         total = 0
-        for i in range(0, len(original)):
-            if c == original[i]:
+        for i in range(0, len(guess)):
+            if c == guess[i]:
                 total += 1
-                if c == 0:                  # Add total of healthy cases
-                    totalN += 1
-                else:                       # Add total of non healthy cases
-                    totalM += 1
                 if correctness[i]:          # Good diagnose
                     count += 1
-                else:                       # Bad diagnose
-                    if c == 0:              # I said he was sick but he wasn't
-                        falsos_positivos += 1
-                    elif guess[i] == 0:     # I said he was OK but he wasn't
-                        falsos_negativos += 1
+        totales_reales = sum([1 for o in original if o == c])
+        # ponderado += count / max(totales_reales, 1)
+        print name, ' totales ',
+        print totales_reales
         print name, ' hallados: ',
         print total
-        print 'Correctamente: ',
+        print 'Aciertos: ',
         print count
-        print 'Incorrectamente: ',
+        print 'Errores: ',
         print total - count
         print 'Porcentaje correcto: ',
-        print '{0:,.2f}'.format(count * 100 / max(total, 1))
+        print '{0:,.2f}'.format(count * 100 / max(total, 1)), '%'
+        print 'Porcentaje hallados: ',
+        print '{0:,.2f}'.format(100 - ((totales_reales - count) * 100 / max(totales_reales, 1))), '%'
         print('------------------------------')
-    print 'Falsos positivos: ', falsos_positivos,
-    print '{0:,.2f}'.format(falsos_positivos * 100 / max(totalN, 1))
-    print 'Falsos negativos: ', falsos_negativos,
-    print '{0:,.2f}'.format(falsos_negativos * 100 / max(totalM, 1))
-    # import pdb; pdb.set_trace()
+    print 'Aciertos totales: ', sum(correctness),
+    print '(', '{0:,.2f}'.format(sum(correctness) * 100 / len(correctness)), '%)'
+    # print 'Porcentaje ponderado: ', '{0:,.2f}'.format(ponderado * 100 / 4), '%'
 
 wfdb = gd.WFDB()
 wfdb.plot_train_cases()
@@ -60,19 +49,18 @@ test_set = wfdb.get_equally_prob_hb(100)
 test_set = np.transpose(test_set)
 test_classes = [i for i in range(0, 4) for j in range(0, 100)]
 # SOM
-# som = som.SOM(training_set, length=training_set.shape[1], epochs=7000, x=8, y=8)
-# som.plot_weights_trains(training_set, training_classes)
-# som.plot_weigths(data_set, data_classes)
-# guess = som.get_results(data_set)
+# som = som.SOM(trainingset, length=trainingset.shape[1], epochs=7000, x=8, y=8)
+# som.plot_weights_trains(trainingset, training_classes)
+# som.plot_weigths(test_set, test_classes)
+# guess = som.get_results(test_set)
 # import pdb; pdb.set_trace()
 
 # create the network
 settings = {
     # Required settings
-    "n_inputs": 250,                                              # Number of network input signals
-    "layers": [(125, sigmoid_function),
-               (32, sigmoid_function),
-               (1, sigmoid_function)],   # [ (number_of_neurons, activation_function) ]
+    "n_inputs": 32,                                              # Number of network input signals
+    "layers": [(16, sigmoid_function),
+               (4, sigmoid_function)],   # [ (number_of_neurons, activation_function) ]
     # Optional settings
     "initial_bias_value": 0.0,
     "weights_low": -0.1,                                        # Lower bound on the initial weight value
@@ -80,16 +68,16 @@ settings = {
 }
 network = NeuralNet(settings)
 expected_output = [
-    [0, 0, 0, 0, 0], [1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0], [0, 0, 0, 0, 1]
+    [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
 ]
 # Training the net
-dataset = [Instance(test_set[i, :], [test_classes[i]]) for i in range(0, len(test_set))]
+dataset = [Instance(test_set[i, :], expected_output[test_classes[i]]) for i in range(0, len(test_set))]
 # Instance( [inputs], [outputs] )
 # dataset = [
 #     Instance([0, 0], [0]), Instance([1, 0], [1]), Instance([0, 1], [1]), Instance([1, 1], [0])
 # ]
 # import pdb; pdb.set_trace()
-training_set = [Instance(trainingset[i, :], [training_classes[i]]) for i in range(0, len(trainingset))]
+training_set = [Instance(trainingset[i, :], expected_output[training_classes[i]]) for i in range(0, len(trainingset))]
 # training_set = dataset
 test_set = dataset
 cost_function = sum_squared_error
@@ -112,10 +100,21 @@ backpropagation(
 )
 
 # prediction_set = [Instance([0, 1]), Instance([1, 0])]
-data_set, data_classes = wfdb.get_heartbeats()
+# data_set, data_classes = wfdb.get_organized()
+# data_set = np.transpose(data_set)
+# data_set = data_set[58320:60320, :]
+# data_classes = data_classes[58320:60320]
+num_data = 100
+data_set = np.transpose(wfdb.get_equally_prob_hb(num_data))
+data_classes = [i for i in range(0, 4) for _ in range(0, num_data)]
 # import pdb; pdb.set_trace()
-# prediction_set = [Instance(data_set[i, :]) for i in range(0, len(data_set))]
-prediction_set = [Instance(trainingset[i, :]) for i in range(0, len(trainingset))]
-print np.round(network.predict(prediction_set) * 3)
+prediction_set = [Instance(data_set[i, :]) for i in range(0, len(data_set))]
+# prediction_set = [Instance(trainingset[i, :]) for i in range(0, len(trainingset))]
+guess_probs = np.round(network.predict(prediction_set)*100)
+# print guess_probs
+guess = [max(enumerate(g), key=lambda x: x[1])[0] for g in guess_probs]
+# print guess
+print_results(data_classes, guess)
 # print_results(data_classes, guess)
 # import pdb; pdb.set_trace()
+

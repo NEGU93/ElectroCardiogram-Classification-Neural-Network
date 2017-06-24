@@ -28,10 +28,10 @@
 % \newpage
 
 \begin{abstract}
-	Se clasificaron latidos de un segmento de señal de un electrocardiograma según el tipo de arritmia. El algoritmo usado fue un perceptrón multicapa usando backpropagation.
+	Se clasificaron latidos de un segmento de señal de un electrocardiograma según el tipo de arritmia. El algoritmo utilizado fue un perceptrón multicapa usando backpropagation como clasificador. Se utilizaron PCA y SOM para reducir la dimensionalidad de los datos.
 \end{abstract}
 
-\section{\textbf{Introducci\'{o}n}}
+\section{Introducci\'{o}n}
 
 El trabajo consistió en clasificar los latidos de un segmento de una señal de electrocardiograma de dos canales de 21 horas de duración según el tipo de arritmia.
 
@@ -55,9 +55,22 @@ La misma presenta principalmente 4 tipos de latidos:
 
 Para el tratamiento de los datos se utlizó la librería de python "wfdb" \cite{WFDB}.
 
+\begin{lstlisting}[frame=single]
+Error: 	0.290525167175 	Epoch: 1000
+Error: 	0.252432576731 	Epoch: 2000
+Error: 	0.233333077085 	Epoch: 3000
+Error: 	0.226507241997 	Epoch: 4000
+Error: 	0.227502496085 	Epoch: 5000
+Error: 	0.230580316278 	Epoch: 6000
+Error: 	0.233771065888 	Epoch: 7000
+Error: 	0.236764878811 	Epoch: 8000
+Error: 	0.239612203297 	Epoch: 9000
+Error: 	0.242385089641 	Epoch: 10000
+\end{lstlisting}
+
 \IEEEpeerreviewmaketitle
 
-\section*{\textbf{Acknowledgment}}
+\section*{Acknowledgment}
 
 \newpage
 

@@ -14,7 +14,7 @@ class WFDB:
         # print(self.signals)
         # display(self.fields)
         self.annotation = wfdb.rdann('../data/14172', 'atr')     # Import annotations from the same data set
-        self.peaks = self.annotation.annsamp                          # Let's find the self.peaks of each ECG where the annotations are
+        self.peaks = self.annotation.annsamp          # Let's find the self.peaks of each ECG where the annotations are
         self.signals = np.matrix.transpose(self.signals)
 
         # Don't take into account border self.peaks in case they are interrupted
@@ -26,7 +26,6 @@ class WFDB:
         self.size_hb = 125                                                 # Size of heartbeat
         self.num_hb = sum(self.peaks > self.size_hb)                         # Count number of annotatios
         self.heartbeats = np.zeros([self.num_hb, 2*self.size_hb])          # Save space for the data matrix
-        self.norm_heartbeats = np.zeros([self.num_hb, 2*self.size_hb])     # Save space for the normalized data matrix
         idx_hb = 0                                          # Initialize the index for each peak
         for i in self.peaks:
             if i > self.size_hb:                                 # just in case the first heartbeat is truncated
@@ -47,12 +46,12 @@ class WFDB:
         self.classes = self.calculate_classes()         # Get the kind of each heartbeat (N, V, S, J or others)
         [self.heartbeatsN, self.heartbeatsV, self.heartbeatsS, self.heartbeatsJ] = self.classify()  # get idx by class
 
-        self.num_training_cases = 20  # set number of training cases
+        self.num_training_cases = 5  # set number of training cases
         self.filter_data()
         [self.heartbeatsN, self.heartbeatsV, self.heartbeatsS, self.heartbeatsJ] = self.classify()
         # Training Set
         [self.trainN, self.trainV, self.trainS, self.trainJ] = self.get_training_cases(self.num_training_cases)
-        self.training_classes = [i for i in range(0, 4) for j in range(0, self.num_training_cases)]
+        self.training_classes = [i for i in range(0, 4) for _ in range(0, self.num_training_cases)]
         self.training_set = np.concatenate((self.trainN, self.trainV, self.trainS, self.trainJ), axis=1)
         self.training_set = np.transpose(self.training_set)
 
@@ -67,7 +66,16 @@ class WFDB:
     def get_heartbeats(self):
         return np.transpose(self.heartbeats), self.classes
 
-    def get_equally_prob_hb(self, num):
+    def get_organized(self):
+        indexN = np.zeros(self.heartbeatsN.shape[1])
+        indexV = np.full(self.heartbeatsV.shape[1], 1)
+        indexS = np.full(self.heartbeatsS.shape[1], 2)
+        indexJ = np.full(self.heartbeatsJ.shape[1], 3)
+        # import pdb; pdb.set_trace()
+        return np.concatenate((self.heartbeatsN, self.heartbeatsV, self.heartbeatsS, self.heartbeatsJ), axis=1), \
+               np.concatenate((indexN, indexV, indexS, indexJ))
+
+    def get_equally_prob_hb(self, num=100):
         return np.concatenate((self.heartbeatsN[:, self.num_training_cases:self.num_training_cases + num],
                                self.heartbeatsV[:, self.num_training_cases:self.num_training_cases + num],
                                self.heartbeatsS[:, self.num_training_cases:self.num_training_cases + num],
@@ -89,15 +97,9 @@ class WFDB:
         return heartbeatsN, heartbeatsV, heartbeatsS, heartbeatsJ
 
     def filter_data(self):
-        # self.heartbeats = np.transpose(self.heartbeats)
-        # import pdb; pdb.set_trace()
         generator = self.get_equally_prob_hb(100)
         pca = PCA(generator, dim=32, size_hb=250)
         self.heartbeats = pca.reduce_dimensions(self.heartbeats)
-        # results = PCA(self.heartbeats)
-        # self.heartbeats = PCA(n_components=64).fit(self.heartbeats).transform(self.heartbeats)
-
-        # self.heartbeats = np.transpose(self.heartbeats)
 
     def calculate_classes(self):
         # Generate an array of classes that identifies each heartbeat by a number
