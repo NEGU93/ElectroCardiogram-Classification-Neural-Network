@@ -20,3 +20,7 @@ class PCA:
         u[self.dim:self.size_hb] = 0  # delete 'extra' dimensions
         recover = np.dot(np.matrix.transpose(self.auvec), u)
         return u[0:self.dim]
+
+    def recover_data(self, reduced_data):
+        u = np.concatenate((reduced_data, np.zeros(self.size_hb - self.dim)))
+        return np.dot(np.matrix.transpose(self.auvec), u)

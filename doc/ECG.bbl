@@ -39,4 +39,25 @@ C.~Xie. wfdb-python. [Online]. Available:
   \url{https://github.com/MIT-LCP/wfdb-python}
 \BIBentrySTDinterwordspacing
 
+\bibitem{NN_HEALTHCARE}
+R.~S. Rezaul~Begg, Joarder~Kamruzzaman, \emph{Neural Network in Healthcare:
+  Potential and Challanges}.\hskip 1em plus 0.5em minus 0.4em\relax Australia:
+  IDEA Group Publishing, 2006.
+
+\bibitem{SIZE1}
+G.~C. Lawrence, S. and A.~Tsoi, ``What size neural network gives optimal
+  generalization? convergence properties of backpropagation,'' \emph{Technical
+  Report UMIACS-TR-96-22 and CS-TR-3617}, 1996.
+
+\bibitem{SIZE2}
+A.~Elisseeff and H.~Paugam-Moisy, ``Size of multilayer networks for exact
+  learning: analytic approach,'' \emph{Advances in Neural Information
+  Processing Systems 9, Cambridge, MA: The MIT Press}, pp. 162--168, 1997.
+
+\bibitem{NIMBLENET}
+\BIBentryALTinterwordspacing
+J.~Grimnes. (2016) Nimblenet. python-neural-network. [Online]. Available:
+  \url{https://github.com/jorgenkg/python-neural-network}
+\BIBentrySTDinterwordspacing
+
 \end{thebibliography}

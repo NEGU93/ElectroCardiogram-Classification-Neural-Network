@@ -22,6 +22,12 @@ Too many commas in name 1 of "Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, 
 while executing---line 2419 of file IEEEtran.bst
 Too many commas in name 1 of "Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet" for entry PHYSIONET
 while executing---line 2419 of file IEEEtran.bst
+Name 1 in "Lawrence, S., Giles, C.L., and Tsoi, A.C." has a comma at the end for entry SIZE1
+while executing---line 2419 of file IEEEtran.bst
+Too many commas in name 1 of "Lawrence, S., Giles, C.L., and Tsoi, A.C." for entry SIZE1
+while executing---line 2419 of file IEEEtran.bst
+Name 1 in "Elisseeff, A., and Paugam-Moisy, H." has a comma at the end for entry SIZE2
+while executing---line 2419 of file IEEEtran.bst
 
 Done.
-(There were 9 error messages)
+(There were 12 error messages)

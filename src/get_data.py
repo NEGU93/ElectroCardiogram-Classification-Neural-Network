@@ -10,7 +10,7 @@ from IPython.display import display
 
 
 class WFDB:
-    def __init__(self):
+    def __init__(self, num_training_cases, dim):
         # Import data from dataset 14172
         signals, fields = wfdb.srdsamp('../data/14172', channels=[0, 1])
         # print(self.signals)
@@ -44,10 +44,10 @@ class WFDB:
         self.classes = self.calculate_classes()             # Get the kind of each heartbeat (N, V, S, J or others)
         [self.heartbeatsN, self.heartbeatsV, self.heartbeatsS, self.heartbeatsJ] = self.classify()  # get idx by class
 
-        self.filter_data()
+        self.filter_data(dim=dim)
         [self.heartbeatsN, self.heartbeatsV, self.heartbeatsS, self.heartbeatsJ] = self.classify()
         # Training Set
-        self.num_training_cases = 50  # set number of training cases
+        self.num_training_cases = num_training_cases  # set number of training cases
         [self.trainN, self.trainV, self.trainS, self.trainJ] = self.generate_training_cases()
         self.training_classes = [i for i in range(0, 4) for _ in range(0, self.num_training_cases)]
         self.training_set = np.concatenate((self.trainN, self.trainV, self.trainS, self.trainJ), axis=1)
@@ -58,6 +58,7 @@ class WFDB:
         # What kinds of heartbeats there are?
         kinds = set(self.annotation.anntype)
         print(kinds)
+
         # How many from each kind?
         for i in kinds:
             print i,
@@ -98,10 +99,11 @@ class WFDB:
 
         return heartbeatsN, heartbeatsV, heartbeatsS, heartbeatsJ
 
-    def filter_data(self):
+    def filter_data(self, dim):
         generator, chunk = self.get_organized(100)
-        pca = PCA(generator, dim=32, size_hb=250)
+        pca = PCA(generator, dim=dim, size_hb=250)
         self.heartbeats = pca.reduce_dimensions(self.heartbeats)
+        # self.heartbeats = pca.recover_data(self.heartbeats)
         # SOM
         # som = som.SOM(trainingset, length=trainingset.shape[1], epochs=7000, x=8, y=8)
         # som.plot_weights_trains(trainingset, training_classes)
