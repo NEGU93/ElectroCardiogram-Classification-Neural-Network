@@ -11,9 +11,9 @@ from nimblenet.cost_functions import sum_squared_error
 # Prepare redirect print file
 orig_stdout = sys.stdout
 # Parameters
-hidden_layer_dropout = 0.5
-input_layer_dropout = 0.5
-early_stop = 10
+hidden_layer_dropout = 0.8
+input_layer_dropout = 0.8
+early_stop = 30
 num_training_cases = 10
 data_reduction = 32
 hidden_nodes = 24
@@ -84,6 +84,12 @@ wfdb.plot_train_cases()
 trainingset, training_classes = wfdb.get_training_set()
 testset, test_classes = wfdb.get_organized(100)
 testset = np.transpose(testset)
+expected_output = [
+    [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
+]
+# Training the net
+test_set = [Instance(testset[i, :], expected_output[test_classes[i]]) for i in range(0, len(testset))]
+training_set = [Instance(trainingset[i, :], expected_output[training_classes[i]]) for i in range(0, len(trainingset))]
 
 # create the network
 settings = {
@@ -97,12 +103,7 @@ settings = {
     "weights_high": 0.1,                                        # Upper bound on the initial weight value
 }
 network = NeuralNet(settings)
-expected_output = [
-    [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]
-]
-# Training the net
-test_set = [Instance(testset[i, :], expected_output[test_classes[i]]) for i in range(0, len(testset))]
-training_set = [Instance(trainingset[i, :], expected_output[training_classes[i]]) for i in range(0, len(trainingset))]
+
 cost_function = sum_squared_error
 print 'Starting to train...'
 backpropagation(

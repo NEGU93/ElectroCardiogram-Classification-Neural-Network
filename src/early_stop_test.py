@@ -7,17 +7,17 @@ from nimblenet.learning_algorithms import backpropagation
 from nimblenet.cost_functions import sum_squared_error
 
 # Parameters
-hidden_layer_dropout = 0.0
-input_layer_dropout = 0.0
-early_stop = ()
+hidden_layer_dropout = 0.8
+input_layer_dropout = 0.8
+early_stop = 32
 num_training_cases = 10
 data_reduction = 32
 hidden_nodes = 24
 num_data_set = None
 
 
-while hidden_layer_dropout == 0.0:
-    for _ in xrange(20):
+while early_stop <= 38:
+    for _ in xrange(10):
 
         wfdb = gd.WFDB(num_training_cases, data_reduction)
         wfdb.plot_train_cases()
@@ -61,5 +61,4 @@ while hidden_layer_dropout == 0.0:
             save_trained_network=False,                 # Whether to ask the user if they would like to save the network after training
             early_stop=early_stop
         )
-    hidden_layer_dropout += 0.1
-    input_layer_dropout += 0.1
+    early_stop += 2
