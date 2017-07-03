@@ -17,7 +17,7 @@ early_stop = 30
 num_training_cases = 10
 data_reduction = 32
 hidden_nodes = 24
-num_data_set = 2000
+num_data_set = None
 
 # Create log file
 es = '_no_es'
